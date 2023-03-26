@@ -7,7 +7,7 @@ SprintRouter.post('/add', async (req, res) => {
     const {name}=req.body;
 
   try {
-     const exist = await SprintModel.findOne({name:name});
+     const exist = await SprintModel.findOne({name:name},{ timeout: 60000 });
      if(exist){
       return res.status(201).json({ message: 'Sprint alredy exist!' });
      }
@@ -36,7 +36,7 @@ SprintRouter.post('/get', async (req, res) => {
             foreignField:'_id',
             as:'tasks'
     }}, { $skip: page*1-1 },
-    { $limit: 1 }])
+    { $limit: 1 }],{ maxTimeMS: 60000 })
 
     res.status(201).json({status:'success',message:allSprint});
   } catch (error) {

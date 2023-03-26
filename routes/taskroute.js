@@ -10,7 +10,7 @@ const TaskRouter = express.Router();
 TaskRouter.post('/add', async (req, res) => {
     let {name,id}=req.body
   try {
-    const exist =  await TaskModel.findOne({name,sprintId:id})
+    const exist =  await TaskModel.findOne({name,sprintId:id},{ timeout: 60000 })
     if(exist){
     return res.status(201).json({ message: 'Task already Exist!' });
     }
@@ -20,7 +20,7 @@ TaskRouter.post('/add', async (req, res) => {
     });
     // Save task to database
     newTask=await newTask.save();
-    const result = await SprintModel.findByIdAndUpdate(id,{$push:{tasks:newTask._id}},{new:true});
+    const result = await SprintModel.findByIdAndUpdate(id,{$push:{tasks:newTask._id}},{new:true},{ timeout: 60000 });
     console.log(result)
     return res.status(201).json({ message: 'Task created successfully' });
   } catch (error) {
@@ -33,7 +33,7 @@ TaskRouter.post('/add', async (req, res) => {
 TaskRouter.put('/status/:id', async (req, res) => {
     let {id}=req.params
   try {
-     const allTask = await TaskModel.findByIdAndUpdate(id,{$set:{isCompleted:true}},{new:true})
+     const allTask = await TaskModel.findByIdAndUpdate(id,{$set:{isCompleted:true}},{new:true},{ timeout: 60000 })
     res.status(201).json({status:'success',message:'Task Completed'});
   } 
   catch (error) {
@@ -46,7 +46,7 @@ TaskRouter.post('/assign/:id', async (req, res) => {
     let {userId}=req.body;
     let {id}=req.params;
   try {
-    const Task = await UserTaskModel.findOne({userId});
+    const Task = await UserTaskModel.findOne({userId},{ timeout: 60000 });
     if(Task){
       Task.tasks.push(id)
       await Task.save()
@@ -80,7 +80,7 @@ TaskRouter.post("/All",async (req, res) => {
           as:'tasks'
   }
   }
-])
+],{ maxTimeMS: 60000 })
     res.status(201).json({ message: 'User fetch successfully',result:Alluser,result1:Usertask});
   } catch (error) {
     console.log(error)
@@ -90,7 +90,7 @@ TaskRouter.post("/All",async (req, res) => {
 
 TaskRouter.get('/alluser', async (req, res) => {
   try {
-    const Alluser = await UserModel.find()
+    const Alluser = await UserModel.find({},{ timeout: 60000 })
     console.log(Alluser)
     res.status(201).json({ message: 'User fetch successfully',result:Alluser});
   } catch (error) {
@@ -101,7 +101,7 @@ TaskRouter.get('/alluser', async (req, res) => {
 
 TaskRouter.get('/alltasks', async (req, res) => {
   try {
-    const Alluser = await TaskModel.find()
+    const Alluser = await TaskModel.find({},{ timeout: 60000 })
     res.status(201).json({ message: 'tasks fetch successfully',result:Alluser});
   } catch (error) {
     console.log(error)
