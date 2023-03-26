@@ -65,7 +65,7 @@ TaskRouter.post('/assign/:id', async (req, res) => {
 TaskRouter.post("/All",async (req, res) => {
   const{page}=req.body;
   try {
-    const Alluser = await UserModel.find().limit(1).skip(page*1-1)
+    const Alluser = await UserModel.find({timeout: 60000},{}).limit(1).skip(page*1-1)
     const Usertask = await UserTaskModel.aggregate([{
       $match:
       {
