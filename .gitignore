@@ -1,0 +1,14 @@
+# Ignore files with a .log extension
+*.log
+
+# Ignore files in the /node_modules directory
+/node_modules
+
+# Ignore a specific file in the root directory
+secret.txt
+
+# Ignore all files in a specific directory
+logs/*
+
+# Ignore all code in a .env file
+.env
