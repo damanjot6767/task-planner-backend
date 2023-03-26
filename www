@@ -4,10 +4,10 @@
  * Module dependencies.
  */
 
-var app = require('../app');
+var app = require('./app');
 var debug = require('debug')('myapp:server');
 var http = require('http');
-const connect = require('./database/database.connect');
+const connect = require('./bin/database/database.connect');
 require('dotenv').config();
 
 

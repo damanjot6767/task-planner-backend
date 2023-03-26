@@ -2,7 +2,7 @@
   "name": "myapp",
   "version": "0.0.0",
   "private": true,
-  "main":"./bin/www",
+  "main":"www",
   "scripts": {
   },
   "dependencies": {
